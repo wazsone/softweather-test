@@ -7,4 +7,4 @@ A simple golang server that provides an API for simple calculations
 
 ## Test
 
-```go test -v```
+```go test -v ./...```

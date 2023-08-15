@@ -5,46 +5,14 @@ import (
 	"log"
 	"net/http"
 	"strconv"
-	"strings"
+
+	"github.com/wazsone/softweather-test/internal/services"
 )
 
 const (
 	USER_ACCESS = "User-Access"
 	VALID_USER  = "superuser"
 )
-
-func evaluateExpression(expr string) (int, error) {
-	tokens := strings.Split(expr, "+")
-	result := 0
-
-	for _, token := range tokens {
-		if strings.Contains(token, "-") {
-			subTokens := strings.Split(token, "-")
-			subResult, err := strconv.Atoi(subTokens[0])
-			if err != nil {
-				return 0, err
-			}
-
-			for _, subToken := range subTokens[1:] {
-				num, err := strconv.Atoi(subToken)
-				if err != nil {
-					return 0, err
-				}
-				subResult -= num
-			}
-
-			result += subResult
-		} else {
-			num, err := strconv.Atoi(token)
-			if err != nil {
-				return 0, err
-			}
-			result += num
-		}
-	}
-
-	return result, nil
-}
 
 func Handler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "POST" {
@@ -63,7 +31,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	result, err := evaluateExpression(string(body))
+	result, err := services.EvaluateExpression(string(body))
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
