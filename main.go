@@ -14,6 +14,7 @@ const (
 	VALID_USER  = "superuser"
 )
 
+// TODO: Extract to a separate file
 func Handler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != "POST" {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
@@ -41,6 +42,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 }
 
 func main() {
+	// TODO: Extract server creation to a separate file
 	http.HandleFunc("/calc", Handler)
 	log.Fatal(http.ListenAndServe(":8080", nil))
 }
